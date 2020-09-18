@@ -1,17 +1,15 @@
-package com.facef.kafka.categorizadorpalavras;
+package com.facef.kafka.categorizadorpalavras.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class WordCount implements Serializable {
-
     private String key;
     private Long count;
     private Date start;
     private Date end;
 
     public WordCount() {
-
     }
 
     public WordCount(String key, Long count, Date start, Date end) {
@@ -21,8 +19,6 @@ public class WordCount implements Serializable {
         this.start = start;
         this.end = end;
     }
-
-
 
     @Override
     public String toString() {

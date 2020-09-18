@@ -1,5 +1,6 @@
 package com.facef.kafka.categorizadorpalavras;
 
+import com.facef.kafka.categorizadorpalavras.pojo.WordCount;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -13,17 +14,14 @@ import java.util.Date;
 import java.util.function.Function;
 
 @SpringBootApplication
-public class CategorizadorpalavrasApplication {
-
+public class CategorizadorPalavrasApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(CategorizadorpalavrasApplication.class, args);
+		SpringApplication.run(CategorizadorPalavrasApplication.class, args);
 	}
-
 
 	@Bean
 	@SuppressWarnings("unchecked")
 	public Function<KStream<Object, String>, KStream<Object, WordCount>[]> process() {
-
 		Predicate<Object, WordCount> isSmall = (k, v) -> v.getKey().length() < 3;
 		Predicate<Object, WordCount> isMedium = (k, v) -> v.getKey().length() < 5;
 		Predicate<Object, WordCount> isLarge = (k, v) -> v.getKey().length() >= 5;
@@ -37,6 +35,4 @@ public class CategorizadorpalavrasApplication {
 				.map((key, value) -> new KeyValue<>(null, new WordCount(key.key(), value, new Date(key.window().start()), new Date(key.window().end()))))
 				.branch(isSmall, isMedium, isLarge);
 	}
-
 }
- 
